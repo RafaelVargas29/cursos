@@ -1,0 +1,299 @@
+-----------------------------------------------------COMPOSER-----------------------------------------------------
+- Composer: Gerenciador de dependências do php, premite trazer dependências (pacotes) do php para dentro do ambiente de desenvolvimento
+- composer config -g repo.packagist composer https://packagist.org : Comando que determina de onde os pacotes usados serão retirados e é executado uma única vez para configurar o ambiente.
+- composer config -g github-protocols https ssh : Comando usado para determinar que os protocolos https e ssh podem ser usados para recuperar pacotes do github e é executado uma única vez para configurar o ambiente
+
+
+-----------------------------------------------------LARAVEL-----------------------------------------------------
+- php -S localhost:800 (pode ser qualquer porta disponível no sistema operacional): É utilizado dentro do diretório PUBLIC do projeto para ligar um servidor e ter acesso à aplicação
+- php artisan serve : Comando utilizado para rodar a aplicação em um servidor embutido do php
+
+- LARAVEL INSTALLER
+  > Adicionar %USERPROFILE%\AppData\Roaming\Composer\vendor\bin na variável de ambiente path
+  > Executar o comando: composer global require laravel/installer
+  > laravel --version : verifica se realmente está configurado 
+  > laravel new projeto_laravel_via_installer : cria um projeto laravel via installer
+
+-----------------------------------------------------ARTISAN-----------------------------------------------------
+  > É a interface de linha de comando do framework laravel
+  > É uma interface que fornece auxílio para a automatização de tarefas repetitivas que são necesárias durante o desenvolvimento da aplicação (no artisan, essas tarefas já estão priontas e podem ser executadas através de um simples comando)
+  > Pode-se criar os próprios comandos afim de criar rotinas personalizadas
+  > Fica localizado na raíz do projeto
+
+    COMANDOS
+  > php artisan list : Mostra a lista de comandos do artisan
+  > php artisan serve : Liga o servidor na porta padrão e fornece o link
+  > php artisan serve --port=9000 : Liga o servidor na porta escolhida e fornece o link (caso a porta esteja disponível)
+  > php artisan down : Coloca a aplicação em modo de manutenção para efetuar reparos que levem determinado tempo
+  > php artisan up : Volta aplicação para o modo de produção
+  >  php artisan route:list : Retorna a lista de rotas configuradas na aplicação
+
+-----------------------------------------------------ROTAS-----------------------------------------------------
+  > Representam os caminhos existentes dentro da aplicação. Ao acessar um recurso da aplicação vida url, estamos acessando uma rota
+  > As rotas estão organizadas em arquivos separados
+  > As rotas estão associadas a um método do controller
+  > Web.php : Serve para registrar rotas que são usada para processar rotas no lado do backend e servir páginas em resposta às requisições. (suporta os recursos de cookies e sessões)
+  > api.php : Serve para registrar as rotas de uma api
+  > channels.php : Serve para a definição de rotas de comunicação broadcast. Permite que o servidor notifique atualizações no lado do backend, possibilitando ao frontend renderizar automaticamente essas mudanças
+  > console.php : Serve para a criação de comandos personalizados que são executados a partir do artisan
+  > Route : Objeto que cuida de toda a parte de roteamento da aplicação através da definição dos métodos http. O primeiro parâmetro é a uri '/rotaQualquer' e o segundo parâmetro é uma função de callback
+  > Verbos http : get, post, put, patch, delete, options
+  > Implementação focada nos verbos http e middlewares (aspectos de segurança)
+
+    NAMES
+  > São utilizados para evitar uma dependência do cominho absoluto da rota. Caso esse caminho mode, os names contunuarão sendo utilizados normalmente
+  > ->name('name') : Renomeia as rotas mas esses names só podem ser usados dentro da lógica da aplicação
+  > Route::get('/contato', 'ContatoController@contato')->name('site.contao'); Renomeia a rota
+  > {{ route('name') }} : chama a rota na blade
+
+    REDIRECIONAMENTO
+  > Permite direcionar o fluxo de navegação do usuário pela aplicação web
+  > Para redirecionar rotas, pode-se utilizar:
+    + Redirect do objeto route : Route::redirect('/rota2', '/rota1');  
+    + Redirecionamento dentro das funções de callback das rotas : Route::get('/rota2', function(){ return redirect()->route('site.rota1'); })->name('site.rota2'); 
+    + Redirecionamento dentro dos controllers
+  
+    ROTA DE CONTINGÊNCIA (FALLBACK)
+  > Disponibiliza uma rota para o usuário caso a rota procurada não seja localizada no sistem ade rotas da aplicação
+  > Route::fallback(function() { echo 'A rota acessada não existe. <a href="'.route('site.index').'">Clique aqui</a> para ir para a página inicial ';
+  });
+  > Route::fallback(function() {
+    echo 'A rota acessada não existe. <a href="/">Clique aqui</a> para ir para a página inicial ';
+  });
+  > Os dois exemplos acima são de rotas fallback 
+
+    COMANDOS
+  > Route::prefix('/prefix')->group(function(){ route1; route2; route3; }); Agrupa rotas
+  
+
+-----------------------------------------------------CONTROLLERS----------------------------------------------------
+  > Na prática, são classes
+  > Para nomear o controller, as boas práticas são: utilizar padrão camelCase e encerra o nome com controller. Ex.: CadastroController
+  > Serve para criar a lógica a ser feita de acordo com a rota acessada 
+  > Ao acessar uma rota, ela estará associada a um controller e a uma action (função que contém a lógica do que deve ser feito de aconto dom a rota) dentro do controller
+  > No contexto de um controlador, os métodos são conhecidos como actions
+  > Actions são os métodos dentro de um controlador que são associados às rotas
+  > Actions podem retornar views
+  > Permite separar o código deixando claras as responsabilidades de cada parte do código
+  > As requisições devem ser direcionadas aos controllers
+  > Implementação focada na lógica para atender os requisitos do negócio
+
+    ENCAMINHANDO DADOS PARA A VIEW
+  > Esse processo pode ser feito de três formas diferentes:
+    + Array associativo
+      . return view('site.teste', ['x' => $p1, 'y' => $p2]); Associa um valor a uma chave. Essa chave será usada na view. 'x', recebrá o valor de $p1 e poderá usar o valor de $p1 na view. É boa prática colocar o nome das chaves igual ao nome da variável que armazena o seu valor. Ex.: 'p1' => $p1
+
+    + Método Compact()
+      . return view('site.teste', compact('p1', 'p2')); Utiliza o nome das variáveis como string, sem o $, essas chaves podem ser usadas na view com seus respectivos valores
+
+    + Método With()
+      . return view('site.teste')->with('p1', $p1)->with('p2', $p2); Utiliza dois parâmetros: O primeiro é o nome que a variável terá na view e o segundo é a própria variável
+
+    
+    COMANDOS
+  > php artisan make:controller NomeController
+
+-----------------------------------------------------VIEWS-----------------------------------------------------
+  > São as visões (telas) que reproduzimos no lado do servidor e reotornamos para o cliente que fez a requisição 
+  > As view são processadas na parte do servidor
+  > Tecnica tradicional da contrução web (A view é produzida no backend e encaminhada para o browser requisitante)
+  > Contêm todo o html nas páginas
+  > As views são processadas por um recurso chamado blade (motor de renderização de views do Laravel)
+  > Podem ser retornadas por actions do controller
+
+  > BLADE 
+    + Possui um recurso de herança de templates (permite que views: estendam, modifiquem ou incluam outras views)
+    + Interpreta a view e produz a página web
+    + Ele não impede o uso da sintaxe pura do php 
+    + Comandos na sintaxe blade são uma forma mais fácil de escrever código php no contexto html
+
+  > TEMPLATES
+    + São vies com com algumas formas de associação e passagem de parâmetros. Podem existir vários em uma aplicação
+    + São modelos que servem como base para a criação de views 
+    + A partir de um template podemos reutilizar uma grande quantidade de código
+  
+  > @EXTENDS()
+    + É necessário utilizar o @extends('site.layouts.basico') para extender o template na view que irá utilizá-lo
+    + Por padrão, o comando @extends() aponta para o diretório views
+  
+  > @SECTION()
+    + @section('conteudo') @endsection: Delimita determinada árera de um conteúdo na view
+    + É um correspondete do @yield('conteudo') que tem no template que foi extendido
+    + @section('') permite definir parâmetros 
+      . Exemplo: @section('titulo', 'Home'). A string após a vírgula é um parâmetro que será utilizado como título
+      . Exemplo: @section('titulo', $titulo). A variável $titulo é recebida pelo controlador responsável por essa view e será utilizada como título
+
+  > @YIELD()
+    + @yield('conteudo') : indica onde um determinado bloco deve ficar dentro do layout
+    + @yield('conteudo') no template tem um @section('conteudo') na view correspondente
+    + @yield('titulo') no template tem um @section('titulo', 'Titulo') na view correspondente
+ 
+  > @INCLUDE()
+    + Permite incluir views dentro de outras views
+    + Inclui o conteúdo inteiro de uma determinada view em um ponto determinado de outra view
+    + @include() olha diretamente para o diretório views
+    + Exempo: @include('site.layouts._partials.topo') Esse trecho de código faz com que o código escrito em 'topo' seja reutilizado na view onde ele se encontra 
+    + O  include pode ser feito diretamente em um template, pois um template também é uma view
+
+  > ASSETS (RECURSOS)
+    + Tudo aquilo que é utilizado para complementar o conteúdo do frontend das aplicações web
+    + Imagens, sons, vídeos, fontes, estilos css e scripts javascript
+    + Assets devem ficar na pasta public, para que possam ser requisitadas pela internet
+    + {{ asset('') }} : Utilizado para referenciar as mídias e por padrão aponta para o diretório public. Exemplo <img src="{{ asset('img/logo.png') }}">
+
+  > COMANDOS
+    + {{-- comentário --}} : Comentários na blade
+    + php artisan view:clear : Limpa as views compiladas da cache
+
+  > @PHP
+    . @php  código  @endphp : Para inserir código php na blade
+    + {{ 'texto' }} é igual a <?= 'Texto' ?>
+
+  > @IF
+    + @if(condição) @elseif() @else @endif : Estrutura do if
+
+  > @UNLESS
+    + @unless @endunless: Analisa se o retorno de uma condição é negativo (contrário do @if)
+    + É o mesmo que utilizar o operador de negação dentro do @if
+
+  > @ISSET
+    + @isset @endisset: Serve para verificar se variáveis ou índices de arrays existem ou não
+    + @isset($fornecedores) @endisset: Verifica se a variável indicada existe, caso não exista, o bloco de código será ignorado
+    + @isset($fornecedores[1]['cnpj'])  CNPJ: {{ $fornecedores[1]['cnpj'] }} <br> @endisset: Verifica se o índice indicado existe, caso não exista, o bloco de código será ignorado
+
+  > @EMPTY
+    + @empty  @endempty: Verifica se variáveis ou índices de arrays estão vazios. Se sim, retorna true. A avariável é considerada vazia nas seguintes situações
+      . Atribuição de string vazia = ''
+      . Atribuição do valor 0 ou 0.0
+      . Atribução de uma string com o caracter 0 = '0'
+      . Atribuiçã do valor null
+      . Atribuição do valor false
+      . Um array vazio
+      . Se a variável for criada e não receber nenhum valor = $var
+
+  > @FOR
+    + @for($var = 0; $var >= 1; $var++) {{ $var }} @endfor
+
+  > @WHILE
+    + @php $i = 0 @endphp @while(isset($fornecedores[$i])) @php $i++ @endphp @endwhile
+    + O while vai rodar enquanto a condição definida for verdadeira
+    + Para fazer o incremento da variável utilizada para iterar o while, é precido utilizar o @php @endphp
+
+  >@FOREACH
+    + @foreach($fornecedores as $indice => $fornecedor)  Fornecedor: {{ $fornecedor['nome'] }} @endforeach
+    + $indice : é a váriável que permite com que os índices do array sejam acessados
+    + $fornecedor : é a variável que permite com que os valores do array sejam acessados
+
+  >@FORELSE
+    + @forelse($fornecedores as $indice => $fornecedor)  Fornecedor: {{ $fornecedor['nome'] }} @empty Não existem fornecedores cadastrados! @endforelse
+    + Parecido com o foreach
+    + Desvia o fluxo do loop caso o array esteja vazio
+    + @empty : Caso o array a ser iterado esteja vazio, mostra a mensagem determinada
+
+  > ESCAPE DE TAG BLADE
+    + @ : Utiliza-se o @ para fazer escape da tag de impressãp do blade 
+    + Fornecedor: @{{ $fornecedor['nome'] }} : Ao colocar @ na frente do {{ ... }}, faz com que o que está escrito dentro seja interpretado de forma literal e não como variáveis
+
+  > OPERADOR CONDICIONAL TERNÁRIO
+    + Basicamente falando, é um  if escrito em uma única linha, definindo três operandos
+    + Pode ser usado em qualquer script php
+    + São muito utilizados para atribuição de valor para alguma variável de acordo com determinada condição
+    + Como funciona: condição ? se positivo faz isso : se negativo faz isso;
+    + Exemplos: 
+      . echo isset($fornecedores[1]['cnpj']) ? 'CNPJ informado' : 'CNPJ não informado' Verifica se o índice cnpj existe no array. Se existe, retorna a primeira mensagem e se não existir retorna a segunda.
+      . $msg = isset($fornecedores[0]['cnpj']) ? 'CNPJ informado' : 'CNPJ não informado'; echo $msg;
+
+  > OPERADOR CONDICIONAL DE DEFAULT (??)
+    + Define um valor padrão caso a variável desejada não esteja definida ou tenha o valor null
+    + Exemplo: $fornecedores[0]['cnpj'] ?? 'Dado não foi preenchido' caso o índice 'cnpj' esteja definido, o valor dele será mostrado. Em caso de não haver um valor definido para ese índice, o valor 'Dado não foi preenchido' será definido
+
+  > $loop 
+    + É um criado automaticamento pelo blade para ser utilizado nos laços de repetição
+    + Está disponível apenas no foreach e no forelse
+    + Tráz informações sobre o loop no qual está inserido
+      . Tráz a iteração atual do loop: {{ $loop->iteration }}
+      . Tráz a primeira iteração do loop: $loop->first
+      . Tráz a última iteração do loop: $loop->last
+      . Tráz o total de registros percorridos: {{ $loop->count }}
+      . Tráz detalhes sobre o objeto loop: @dd($loop)
+  
+  > @dd($var)
+    + Tráz detalhes e atributos sobre a variável ou objeto que você desejar
+
+  > EXPRESSÕES REGULARES 
+    + Serve para tratar os parâmetros que são recebidos pelas rotas
+    + Verifica se os parâmetros recebidos então atendendo à determinado requisito ou condição
+
+  > @csrf
+    + Cross-site request forgery (falsificação de solicitação entre sites)
+    + O csrf é uma vulnerabilidade muito conhecida e explorada nos formulários que são enviados via POST e o @csrf é o token que lida com isso
+    + O token @csrf faz com que seja muito difícil forjar uma requisição maliciosa vinda de terceiros 
+
+  > @component()
+    + Recurso para iunclusão de views em outras views
+    + Parecido com o @include() mas com aspactos mais avançados
+    + Faz com que uma view seja incluída em outra view como um componente
+    + Por padrão, esse recurso aponta para o diretório views
+    + Exemplo : @component('site.layouts._components.form_contato') @endcomponent
+    + O exemplo acima busca o formulário e o utiliza como um componente em outra view 
+    + É possível adicionar código html no @component das seguintes maneiras:
+      . @component('site.layouts._components.form_contato') <h3>Teste</h3> @endcomponent. Após isso, é só ir no componente e utilizar o comando {{ $slot }} onde você desseja que esse código apareça e ele aparecerá
+      . @component('site.layouts._components.form_contato', ['x' => 10]) @endcomponent. Após isso, é só ir no componente e utizar a variáve {{ $x }} onde você desseja que esse código apareça e ele aparecerá. Quando for passado dessa forma, deverá ser declarado em todas as views que estiverem utilizando esse componente
+
+-----------------------------------------------------MODELS-----------------------------------------------------
+- São as CLASSES que representam os objetos da aplicação 
+- Com as models podemos utilizar de benefícios do POO como reutilização de código
+- Nomes das models são sempre no SINGULAR
+
+- COMANDOS
+  + php artisan make:model NomeDaModel -m : Cria uma nova model e uma migration para ela
+
+-----------------------------------------------------MIGRATION-----------------------------------------------------
+- Migration (Migração): Permite modelar o banco de dados da aplicação através do próprio php
+- Permite com que não seja necessário o sql para definir as tabelas da aplicação
+- Representam tabelas do banco de dados
+- Nomes das tabelas são sempre no PLURAL
+- As migrations servem para realizar todas as atividades envolvendo banco de dados (definir chaves primárias, relacionamentos, etc)
+- A instrução '$table->timestamps();' dentro de uma migration é responsável por criar os campos creted_at e updated_at dentro da tabela 
+- Tudo  que foi criado no método up() precisa ser desfeito no método down() para que seja possível utilizar o método rollback
+
+- MODIFICADORES
+  + Nullable: Permite que colunas recebam valores vazios/nulos
+  + Default: Permite a inclusão de um valor padrão para uma determinada coluna caso o valor não seja determinado
+
+- CHAVES PRIMÁRIAS E ESTRANGEIRAS
+  + Relacionamento 1 pra 1 (um pra um)
+    . A tabela com menos importância recebe a chave primária da tabela com mais importância como chave estrangeira
+    . A chave estrangeira de uma tabela é criada com o nome da tabela no singular seguido do atributo chave. Ex.: produto_id (essa chave estrangeira representa o id da tabela produtos). Em algumas situações, o framework Laravel interpreta automaticamente essa convenção de nomes 
+    . É necessário que o tipo da chave estrangeira seja o mesmo tipo da chave primária da tabela original
+  
+  + Relacionamento 1 pra n (um pra muitos)
+    . A atbela de cardinalidade 1 viaja com chave estrangeria para as tabelas de cardinalidade n
+    . No métodos down(), deve-se remover as chaves estrangeiras da tabelas antes de excluí-la, caso contrário, haverá erros na exclusão da tabela
+    . O nome da chave estrangeira criada na tabela segue a seguinte convenção: nome da tabela onde está _ nome da coluna onde essa chave foi atribuída _ foreign. Ex.:  tabela_coluna_foreign: produtos_detalhes_unidade_id_foreign
+  
+  + Relacionamento n pra n (muitos pra muitos)
+    . Sempre envolve uma terceira tabela que armazena a chave primária das tabelas envolvidas como chaves estrangeiras
+
+  
+
+- MÉTODOS 
+  + up(): todo o código contino do método up() é executado quando utilizamos o comando 'php artisan migrate'
+  + donw(): é responsável por reverter tudo que foi criado no método up()
+
+- COMANDOS
+  + php artisan migrate : executa todas as migrates/migrações contidas no projeto
+  + php artisan migrate:rollback : Esse comando desfaz as ações do 'php artisan migrate'
+  + php artisan migrate:rollback --step=2 : Esse comando indica quantas das ultimas ações realizadas pelo comando 'php artisan migrate' devem ser defeitas
+  + php artisan make:migration create_nomeDaMigration_table : Cria uma tabela/migration para uma model. O nome dessa migration deve ser o nome da model no singulas. Ex.: create_fornecedores_table, esse nome é para uma model chamada de Fornecedor
+  + php artisan make:migration alter_nomeDaTabela_novas_colunas : Serve para adicionar novas colunas a uma tabela já existente. Ex.: alter_fornecedores_novas_colunas, essa nova migration serve para adicionar novas colunas na tabela 'fornecedores'
+
+
+
+-----------------------------------------------------SQLite-----------------------------------------------------
+- É um banco de dados relacional embutido
+- Não precisamos instalar um SGBD para utilizá-lo (mySQL, Postgre, SQLserver)
+- É baseado em um arquivo de texto cujos dados são escritos diretamente nele 
+- Pode ser utilizado em pequenos projetos que não tem necessidade de escalabilidade e segurança
+- É idela utilizá-lo apenas nas atividades de desenvolvimanto e testes
+- app/config/database.php : é o arquivo onde ficam as conexões pré estabelecidas pelo Laravel

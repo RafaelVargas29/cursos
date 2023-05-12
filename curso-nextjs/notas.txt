@@ -1,0 +1,80 @@
+------------------------------------------------------NEXT-----------------------------------------------------
+- O que é? 
+  + Servidor escrito em nodejs
+  + Utiliza o padrão de Servidor SSR (Server Side Rendering)
+  + Utiliza o padrão de Servidor SSG (Static Site Generator)
+    . Gera página estáticas com informações para que não sobrecarregue o servidor com muitas requisições
+    . Atualiza os dados da página estática em um determinado intervalo de tempo 
+    . As requisições ao backend são feitas apenas após esse intervalo de tempo
+  + Utiliza React por baixo dos panos
+  + No next, tudo são componentes
+
+--------------------------------------------CRIANDO PROJETO NEXT ----------------------------------------------
+- COMANDOS
+  + npx create-next-app@latest, yarn create next-app : Cria um projeto next 
+  + npm run dev : Roda a aplicação
+  + npm i typescript @types/react @types/node -D : instala o typescript no projeto e os types de react e node
+
+--------------------------------------------_DOCUMENT.TSX--------------------------------------------
+- _document.tsx
+  + + Para conseguir manipular coisas no documento global do html é preciso criar na pasta 'pages' o arquivo '_document.tsx'
+  + Toda vez que modificar algo no _document.tsx, tem que reiniciar o servidor, pois esse arquivo só é lido uma vez
+  + O _document é o index.html, tudo que for colocado nele será carregado para todas as páginas da aplicação
+  + Não é recomendado colocar nenhum css dentro do documents
+
+--------------------------------------------PAGES--------------------------------------------
+- pages
+  + Mudar as extensões dos arquivos da pasta pages para .tsx
+  + As páginas (rotas que o usuário deve acessar), devem ser criadas dentro do ditretórios 'pages'
+  + Criar uma pasta 'src' na raíz do projeto e mover a pasta 'pages' para dentro dela
+  + O arquivos index.tsx sempre será a página home do projeto
+  + Todos os arquivos criados dentro da pasta 'pages' viram uma rota
+
+--------------------------------------------STITCHES--------------------------------------------
+- Bibliioteca para a parte de estilização
+- Alternatida ao styled components 
+- Bom pra lidar com componentes que tem muita variação de estilo com base em propriedades
+- Funciona muito bem com a função SSR do next
+
+- COMANDOS
+  + npm install @stitches/react
+
+--------------------------------------------Data Fetching no Next.js------------------------------------------
+- getServerSideProps: GetServerSideProps = async () => {} 
+  + Pode devolver propriedades
+  + O next só retorna a página para o browser depois que todas as propriedades dessa função são carregadas
+  + Esse método só é utilizada para trazer informações que precisam estar disponíveis assim que a página for exibida
+  + Esse método tem acesso ao contexto da requisição (request, response, queryParams, etc). Tem acesso a cookies, usuário logado, etc.
+  + Todo código dentro dessa função roda em um backend em node (não no server side)
+  + Essa função é ideal para colocar código sensível (autenticação, banco de dados, etc)
+  + toda vez que o usuário acessa a página, esse método é executado e uma requisição é feita para a API 
+
+--------------------------------------------SSG--------------------------------------------
+- SSG (Static Side Generator): Gerador de páginas estáticas
+- getStaticsProps: GetStaticProps = async () => {}
+  + Esse método NÃO tem acesso ao contexto da requisição (request, response, queryParams, etc). NÃO tem acesso a cookies, usuário logado, etc
+  + É o método que gera páginas estáticas guardadas em cache
+  + É utiliozado em páginas que serão iguais para todos os usuários
+  + No ambiente de desenvolvimento é tratado igual o getServerSideProps
+  + Não é executado toda vez que um usuário acessa a página, roda somente quando next está criando uma versão de cache da página
+  + Para gerar essas páginas estáticas é preociso que o servido esteja rodando em produção (npm run build + npm run start)
+  + revalidate: 10 : Indica em quantos segundos o next deve gerar uma nova versão da página
+  + gasta menos processamento por não ser executado sempre
+  + em páginas estática que possuem prâmetros (páginas dinâmicas), é preciso executar o método getStaticPaths:  GetStaticPaths = async () => {} antes do método getStaticsProps: GetStaticProps = async () => {}, para que sejam gerados os parâmetros necessários para a criação da página
+  + fallback
+    . fallback: false: da erro 404 se a propiedade não estives especificada dentro de path
+    . fallback: true: Caso o produto não esteja em path, ele carrega a página sem a informação do produto e chamar o getStaticsProps: GetStaticProps = async () => {} com os dados do novo produto passado por parâmetro para busca-lo e preencher essa página. Nesse caso é preciso criar uma tela de loading
+    fallback: 'blicking': Não mostra nada em tela até ter alguma coisa pra mostrar 
+  
+--------------------------------------------Link--------------------------------------------
+- prefetch={false}
+  + faz com que a página carregue os recuso só quando o item é clicado e não quando passa o mouse em cima
+
+--------------------------------------------API routes--------------------------------------------
+- Cria uma pasta no diretório pages chamada 'api'
+- Dentro dessa pasta, cria arquivos .ts que serão escritos em typescript (rotas)
+- Essas rotas irão rodar no servidor node do nextjs
+- São utilizadas para fazer algumas operações baseadas em ações do usuário acontecerem no lado do servidor
+- São utilizadas para fazerem chamadas sensíveis (acesso ao banco, usar secret keys, etc.)
+
+

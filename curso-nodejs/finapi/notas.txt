@@ -1,0 +1,23 @@
+- uuid: Identidicador Único Universal
+  + Precisa de uma biblioteca para utilizá-lo (npm add uuid)
+  + A versão utilizada no projeto é a v4, pois ela gera o uuid com números randomicos
+  
+- some(): Retorna se algo existe ou não existe
+- find(): Retorna o objeto procurado
+
+- reduce(): Pega as informações de determinado valor informado e transforma em apenas um valor
+  + Recebe dois parâmetros 
+  + O primeiro se trata do acumulador e o objeto a ser iterado para acumular os valores
+    . Acumulador: Variável que será responsável por armazenar os valores que são removidos e inseridos dentro do objeto
+  + O segundo parâmetro é o valor inicial desse objto que será iterado
+
+- Middleware: Função que fica entre a requisição (request) e a reposta (response)
+  + Utilizado para vários tipos de validação
+  + Para ser uma função Middleware precisa de receber três parâmetros: request, response e next
+    . next: decide se o Middleware vai prosseguir com a operação solicitada ou se vai parar ali
+  + O Middleware pode ser passado antes do (request, response)
+    . Exemplo: app.get("/statement", verifyIfExistsAccountCPF, (request, response){ }) 'verifyIfExistsAccountCPF' é o Middleware e entá como segundo parâmetro
+    . Caso queira passar mais de um Middleware, basta colocar um em sequência do outro
+  + O Middleware pode ser passado antes da seguinte forma: app.use(verifyIfExistsAccountCPF);
+    . Essa forma é utilizada quando há mais de uma rota que vá ultilizar esse Middleware.
+    . Tudo que tiver depois dessa linha de código passará por esse Middleware

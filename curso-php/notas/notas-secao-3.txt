@@ -1,0 +1,6 @@
+---------------------------------------------------PHP---------------------------------------------------
+- Console interativo do php: Vá até o prompt de comando e digite 'php -a'
+- Para escrever algo sem precisar do 'echo' no PHP, usa-se <?= codigo desejado ?>
+- Comentários PHP não vão para browser
+---------------------------------------------------HTML---------------------------------------------------
+- Comentários HTML vão para o browser, diferente dos comentários PHP

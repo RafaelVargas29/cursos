@@ -1,0 +1,20 @@
+---------------------------------------------------HTML---------------------------------------------------
+- AS tags HTML são importantes para oredenação das páginas e para ferramentas de acessibilidade que vão interpretar a página para uma pessoa deficiente visual. São importantes para título de relevancia dos componentes da tela, como por exemplo: o que está dentro de uma tag h1 deve ter mais destaque do que o que está dentro das tags h2 e h3.
+
+
+---------------------------------------------------CSS---------------------------------------------------
+- grid-template-rows: 120px 1fr 60px; o primeiro parametro indica a primeira linha do grid e seu tamanho, a segundo indica a segunda linha do gri e seu tamanho (1f significa 1 fragmento é como se fosse a porcentagem qda tela que vc deseja que aquela parte do grid ocupe) e o terceiro parametroindica a terceira linha e seu tamanho.
+
+- grid-template-columns: 1fr; indica que vou ter apenas uma coluna e esse parametro unico diz que eu quero que essa coluna ocupe o espaço inteiro da tela.
+
+- grid-template-areas: "cabecalho" "principal" "rodape"; esses parametros indicam o qual area cada conteudo vai ocupar. Esses parametros dizem respeito a uma propriedade do grei-area, logo, deve-se criar essa propriedade da seguinte forma: grid-area: cabecalho; dentro da classe determianda.
+
+-display: flex; Por padrão coloca todos os elementos na mesma linha.
+
+-overflow-y: scroll; Se os elementos colocados dentro da área definida como conteúdo forem maiores do que a área, vai se criar um scroll apenas na área do conteúdo.
+
+-flex-wrap: wrap; faz a quebra de linha no browser caso seja necessário.
+
+-justify-content: space-around; dexia espaço na esquerda, na direita, em cima, em baixo e entre os elementos.
+
+-flex-basis: 32%;  Indica a porcentagem da tela que você deseja que o elemento ocupe.

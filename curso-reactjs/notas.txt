@@ -1,0 +1,49 @@
+-----------------------------------------------------REACT-----------------------------------------------------
+- O que é ?
+  + Biblioteca para construção de interfaces altamente interativas 
+  + Pode ser usado para criar interfaces na web, mibile, dispositivos de tv e dispositivos de realidade virtual
+
+- Fundamentos
+  + SPA (Single Page Application) é um padrão de renderização (Rendering patterns) assim como o SSR (Server Side Rendering)
+  + SSR
+    . Uma única aplicação contém todo o backend e todo o forntend
+    . As informações requisitadas são retornadas no formato HTML
+    . O backend é responsável pela construção visual da tela
+  + SPA 
+    . Duas aplicações dividida: Uma contém o backend e outra (ou outras) contém o forntend
+    . Tem a possíbilidade de ter mpultiplos forntends
+    . O backend não é responsável pela construção visual da tela
+    . Retorna dados no formato json
+  + JSON (JavaScript Object Notatio)
+    . É uma estrutura de dados
+    . Um formato de trafegar dados entre duas fontes
+    . É um formato universal. Praticamente todas as tecnologias conseguem interpretar json
+
+- RECURSOS
+  + Fast refresh: Toda atualização feita no código reflete instantaneamento no browser
+
+---------------------------------------------BUNDLERS & COMPILERS----------------------------------------------
+- BUNDLERS
+  + Entende as importações e exportações entre os arquivos e gera um arquivo de bundle
+  + Da suporte para que o browser entenda exportações e importações entre arquivos
+
+- COMPILERS
+  + São compiladores de código
+  + Convertem a código de um formato para outro. converte a sintaxe para uma sintaxe que o browser entenda
+  + Babel é um compiler.
+
+-------------------------------------------CRIANDO PROJETO COM VITE-------------------------------------------
+- npm create vite@latest : Cria o projeto
+- nomeiar o projeto e escolher a opção ReactJS
+- escolher a opção JavaScript ou Typescript
+- npm i : faz a instalação das dependências do projeto
+- npm run dev: executa o projeto 
+
+-------------------------------------------COMPONENTS-------------------------------------------
+- É um pedaço da aplicação que pode ser reutilizada várias vezes e também pode ser modificada
+- É uma função JavaScript que retorna HTML
+- Todos os componenetes precisam de ter a extensão JSX (JavaScript + XML)
+
+-------------------------------------------PROPRIEDADES-------------------------------------------
+- São atributos dos componenetes, coisas que fazem os componentes serem diferentes entre si
+- Exemplo de atributo: nome do autor de um post, foto do autor do post 

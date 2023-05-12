@@ -1,0 +1,22 @@
+-Typescript
+ >Linguagem que adiciona tipagem estática ao JavasCript, deixando o código mais seguro contra erros
+ >Permite definir tipos para variáveis, párâmetros e funções
+ 
+-Instalação
+ >npm init -y (inicia um projeto e cria um pacote)
+ >npm install typescript -D (Adiciona suporte ao Typescript no projeto em ambiente de desenvolvimento)
+
+-Comandos
+ >npx tsc 'nomeDoArquivo.ts' (cria um arquivo '.js' correspondente ao arquivo '.ts' desejado)
+ >npx tsc index.ts --watch (faz com que o '.js' imite o '.ts')
+ >npx tsc --help (mostra as opções de configuração)
+ >npx tsc --init (criar um arquivo de configurações)
+ >npm i ts-node (pacote que permite excutar typescript no node)
+ >npx ts-node arquivo.ts (executa o arquivo '.ts' no node (depois de innstalado o pacote 'npm i ts-node'))
+
+-configurações (tsconfig)
+ >Descomentar as linhas ("outDir": "./") e ("rootDir": "./")
+ >Adicionar './dist' no 'outDir' e './src' no rootDir
+ >Criar os diretórios dist e src
+ >Colocar o 'index.ts' dentro do diretório 'src' e o 'index.js' no diretório 'dist'
+ >Adicionar ( ,"include": ["src"] ) no final do arquivo tsconfig

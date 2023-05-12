@@ -1,0 +1,107 @@
+--------------------------------------------------ESLINT--------------------------------------------------
+- COMANDOS
+  + yarn add eslint@^7.21.0 -D : Instala o ESLint como dependência de desenvolvimento do projeto 
+  + yarn eslint --init : Inicianliza o ESLint no projeto 
+  + yarn add prettier eslint-config-prettier eslint-plugin-prettier -D : Esse comando vai adicionar 3 dependências que serão as responsáveis por fazer a formatação do código e também integrar o Prettier com o ESLint.
+  + yarn add -D @typescript-eslint/eslint-plugin@latest eslint-config-airbnb-base@latest eslint-plugin-import@^2.22.1 @typescript-eslint/parser@latest : adiciona manualmente as dependências do ESLint
+  + yarn add -D eslint-plugin-import-helpers eslint-import-resolver-typescript : plugin que irá nos auxiliar a organizar a ordem dos imports dentro dos arquivos e outro para permitir importações de arquivos TypeScript sem que precisemos passar a extensão do arquivo
+
+--------------------------------------------------PRETTIER-------------------------------------------------
+  - COMANDOS
+    + yarn add prettier eslint-config-prettier eslint-plugin-prettier -D : instala os pacotes no projeto. Esse comando vai adicionar 3 dependências que serão as responsáveis por fazer a formatação do código e também integrar o Prettier com o ESLint.
+-----------------------------------------------------------------------------------------------------------
+- ESLINT E PRETTIER
+  + Servem para padronização de código
+  + Permite com que sejam criadas regras para a escrita do código
+-----------------------------------------------------------------------------------------------------------
+
+- COMANDOS
+  + yarn add ts-node-dev -D : Converte o TypeScript para Javascript automaticamente no ambiente de desenvolvimento, auxiliando na hora de rodar o serviço
+  + Para a biblioteca acima surtir efeito, é preciso ir do arquivo package.json e adicionar o seguinte script: "scripts": {
+    "dev": "ts-node-dev src/server.ts"
+  }
+  + yarn dev : Roda o servidor após ter realizado os passo acima 
+  + No tsconfig.json, sesabilitar a linha "strict": true
+
+--------------------------------------------------DEBUG--------------------------------------------------
+- No VSCode, vá até a aba run and debug
+- Clique na opção 'create a launch.json file'
+- Escolha a opção node.json
+- Troque o "type": "..." para "type": "node"
+- Troque o "request": "launch" para "request": "attach" (launche executa quando o programa roda e o attach não)
+- Remova o  "program": "${file}"
+- Para que o debug consiga se conectar com a aplicação, vá até o package.json
+- Nos "scripts" , adicione --inspect logo após o ts-node-dev, dessa forma : "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules --respawn src/server.ts"
+- Na esquerda da numeração das linhas do VSCode é possível marcar os ponto onde você quer que o debug pare, fica uma bolinha vermelha
+- Na aba "watch" do debug do VSCode, é possível adicionar as variáveis que você deseja verificar
+
+--------------------------------------------------CLASSES--------------------------------------------------
+- UUID 
+  + Para criar o id utilizaremos a biblioteca uuid
+  + yarn/npm add uuid -D
+  + na classe que será criada o id, utilizar o código : import { v4 as uuidv4 } from "uuid";
+
+--------------------------------------------------REPOSITÓRIOS---------------------------------------------
+ + É a camada responsavem poor fazer todas a manipulaçaõ do banco de dados
+ + Não é correto que as rotas tenham responsabilidades com o banco de dados
+ + DTO (Data Transfer Object): Objeto que é reponsável por fazer a tranferência de dados entre uma camada/classe e outra
+ + Os repositórios devem ter sempre uma interface e uma implemetação da interface 
+ + A aplicação deve conhecer sempre a interface e não a implementação
+
+--------------------------------------------------SERVICES--------------------------------------------------
+ + Sempre que criar uma service, dentro dela deve ter o método execute()
+
+--------------------------------------------------SINGLETON--------------------------------------------------
+ + Conceito de programação que cria uma única instância de uma classe que será a instância global
+ + toda vez que chamar a classe, será utilizada a mesma instância da classe 
+
+--------------------------------------------------CONTROLLERS--------------------------------------------------
+ + O mpetodo handle() é responsável por receber o request e o response da rota 
+
+--------------------------------------------------S.O.L.I.D------------------------------------------------
+ - S => SRP - Silngle Repository Principle (Princício de Responsabilidade Única)
+   + Diz que um módulo deve ter uma e apenas uma razão para rodar
+ - O => OCP - Open-closed Princliple (Princípio aberto/fechado)
+ - L => LSP - Liskov Substituition Princliple (Princício de substituição de Liskov)
+ - I => ISP - Interface Segregation Principle (Princício da Segregação de Interface)
+ - D => DIP - Dependency Inversion Principle (Princício da Inversão de Dependência)
+   + Diz que o código que implementa uma política de alto nível, não deve depender do código que implementa detalhes de baixo nível
+
+--------------------------------------------------MULTER--------------------------------------------------
+ - Biblioteca que serve para fazer a leitura de arquivos
+ - É possível fazer upload utilizando essa biblioteca 
+ - É possível fazer upload de um arquivo por vez
+ - É possível fazer upload de vários arquivos de uma vez
+ - Funciona como um middleware dentro da rota 
+
+ + yarn add multer : adiciona as dependências do multer na aplicação
+ + yarn add @types/multer : adicina os tipos do multer na aplicação 
+
+--------------------------------------------------CONCEITO STREAM------------------------------------------
+ - Permite que o arquivo seja lido por partes
+ - É parte do módulo nativo do node
+ - Para usar esse módulo, é preciso importá-lo: import fs from "fs";
+
+ + const stream = fs.createReadStream(file.path); : Função que permite que o arquivo seja lido em partes. Essa função precisa receber o nome do arquvo a ser lido e o path dele
+ + stream.pipe(parseFile) : Função que separa o arquivo em pedaços e os manda para o local determinado
+
+ + yarn add csv-parse : biblioteca para utilizar com arquivos csv. Permite com que o arquivo seja lido linha por linha
+ + Para utilizar essa biblioteca é preciso importá-la da seguinte forma: import { parse } from "csv-parse";
+ + const parseFile = parse(); 
+
+--------------------------------------------------SWAGGER--------------------------------------------------
+ 
+ - Serve para criar um server com a documentação da API 
+ - 
+
+ + yarn add swagger-ui-express : adiciona o swagger na aaplicação
+ + yarn add @types/swagger-ui-express -D : Adiciona os tipos do sawagger na aplicação (serve para auto-complete)
+ + import swaggerUi from 'swagger-ui-express'; : importa o swagger para ser utilizado nas rotas
+
+ --------------------------------------------------DOCKER--------------------------------------------------
+ - O que é? 
+   + Ferramenta para criação de container (container é um ambiente isolado dentro da máquina)
+   + Imagens são instruções para criação de uma container (tem imagemde ubunto, php, postgres, etc.)
+   + Faz com que o que roda localmente, rode da mesma forma em produção
+   + Permite que seja utilizado o mesmo Sistema operacional entre os containers e compartilhar recursos para deixar a máquina mais leve
+   + É como um middleware entre o sistem operacional e o container que estamos criando
